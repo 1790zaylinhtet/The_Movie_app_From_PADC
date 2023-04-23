@@ -1,22 +1,24 @@
 package com.example.themovieapp.data.models
 
+import androidx.lifecycle.LiveData
 import com.example.themovieapp.data.vos.ActorsVO
 import com.example.themovieapp.data.vos.GenreVO
 import com.example.themovieapp.data.vos.MovieVO
+import io.reactivex.rxjava3.core.Observable
 
 interface MovieModels {
     fun getNowPlayingMovies(
-        onSuccess: (List<MovieVO>) -> Unit,
         onFailure: (String) -> Unit
-    )
+    ): LiveData<List<MovieVO>>?
+
     fun getPopularMovies(
-        onSuccess: (List<MovieVO>) -> Unit,
         onFailure: (String) -> Unit
-    )
+    ): LiveData<List<MovieVO>>?
+
     fun getTopRatedMovies(
-        onSuccess: (List<MovieVO>) -> Unit,
         onFailure: (String) -> Unit
-    )
+    ): LiveData<List<MovieVO>>?
+
     fun getGenres(
         onSuccess: (List<GenreVO>) -> Unit,
         onFailure: (String) -> Unit
@@ -32,12 +34,25 @@ interface MovieModels {
     )
     fun getMovieDetails(
         movieId: String,
-        onSuccess: (MovieVO) -> Unit,
         onFailure: (String) -> Unit
-    )
+    ): LiveData<MovieVO?>?
+
     fun getCreditsByMovie(
         movieId: String,
         onSuccess:(Pair<List<ActorsVO>,List<ActorsVO>>) -> Unit,
         onFailure: (String) -> Unit
     )
+    fun searchMovie(
+        query: String
+    ): Observable<List<MovieVO>>
+
+    //Reactive Streams Only
+    fun getNowPlayingMoviesObservable() : Observable<List<MovieVO>>?
+    fun getPopularMoviesObservable() : Observable<List<MovieVO>>?
+    fun getTopRatedMoviesObservable() : Observable<List<MovieVO>>?
+    fun getGenresObservable() : Observable<List<GenreVO>>?
+    fun getActorsObservable() : Observable<List<ActorsVO>>?
+    fun getMoviesByGenreObservable(genreId: String) : Observable<List<MovieVO>>?
+    fun getMovieByIdObservable(movieId: Int) : Observable<MovieVO?>?
+    fun getCreditByMovieObservable(movieId : Int) : Observable<Pair<List<ActorsVO>,List<ActorsVO>>>
 }
